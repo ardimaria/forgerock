@@ -1,12 +1,17 @@
 sudo: required
 before_script:
-  - export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-  - echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-  - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-  - sudo apt-get update && sudo apt-get install google-cloud-sdk
-  - gcloud init
-  - gsutil cp gs://fr-devops/* .
-  - unzip packer_1.3.1_linux_amd_64.zip
-  - sudo mv packer /usr/local/bin
+- export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+- echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee
+  -a /etc/apt/sources.list.d/google-cloud-sdk.list
+- curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+- sudo apt-get update && sudo apt-get install google-cloud-sdk
+- gcloud auth activate-service-account --key-file=account_file.json
+- gcloud config set project anthony-dimaria
+- gsutil cp gs://fr-devops/* .
+- unzip packer_1.3.1_linux_amd_64.zip
+- sudo mv packer /usr/local/bin
 script:
-  - packer build -var serial=$(tty) build.json
+- packer build -var serial=$(tty) build.json
+before_install:
+- openssl aes-256-cbc -K $encrypted_806fbc284442_key -iv $encrypted_806fbc284442_iv
+  -in account_file.json.enc -out account_file.json -d
