@@ -8,7 +8,6 @@ before_script:
 - gcloud auth activate-service-account --key-file=account_file.json
 - gcloud config set project anthony-dimaria
 - gsutil cp gs://fr-devops/* .
-- gsutil cp gs://fr-bits/* .
 - unzip packer_1.3.1_linux_amd_64.zip
 - sudo mv packer /usr/local/bin
 script:
