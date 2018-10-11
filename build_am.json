@@ -1,0 +1,41 @@
+{
+  "builders": [
+    {
+      "type": "googlecompute",
+      "project_id": "anthony-dimaria",
+      "source_image": "rhel-7-v20180911",
+      "ssh_username": "adimaria",
+      "zone": "us-east1-b",
+      "account_file": "account_file.json"
+    }
+  ],
+  "provisioners": [
+  {
+    "type": "shell",
+    "inline": [
+      "sudo yum install gcc python-devel python-setuptools redhat-rpm-config -y",
+      "sudo easy_install -U pip",
+      "sudo pip uninstall crcmod",
+      "sudo pip install -U crcmod",
+      "gsutil cp gs://fr-bits/* .",
+      "sudo yum install java-1.8.0-openjdk-devel -y",
+      "export JAVA_HOME=/usr/lib/jvm/java-openjdk",
+      "export PATH=$PATH:$JAVA_HOME/bin",
+      "sudo yum install tomcat -y",
+      "sudo yum install unzip -y",
+      "mkdir am",
+      "unzip ./AM-6.0.0.4.zip -d ./am",
+      "sudo cp ./am/openam/AM-6.0.0.4.war /usr/share/tomcat/webapps/",
+      "sudo mv /usr/share/tomcat/webapps/AM-6.0.0.4.war /usr/share/tomcat/webapps/openam.war",
+      "sudo chown root:tomcat /usr/share/tomcat/webapps/openam.war",
+      "sudo semanage fcontext -a -t tomcat_var_lib_t \"/usr/share/tomcat(/.*)?\"",
+      "sudo restorecon -rv /usr/share/tomcat",
+      "sudo /usr/sbin/tomcat stop",
+      "sudo /usr/sbin/tomcat start",
+      "mkdir amster",
+      "unzip ./Amster-6.0.0.4.zip -d ./amster",
+      "cd ./amster",
+      "./amster ~/install-openam.amster"
+    ]
+  }]
+}

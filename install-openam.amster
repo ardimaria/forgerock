@@ -1,0 +1,6 @@
+install-openam \
+--serverUrl http://localhost:8080/openam \
+--adminPwd forgerock \
+--acceptLicense \
+--cfgDir /usr/share/tomcat/webapps/openam
+:exit
