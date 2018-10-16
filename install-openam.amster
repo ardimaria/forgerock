@@ -3,4 +3,16 @@ install-openam \
 --adminPwd forgerock \
 --acceptLicense \
 --cfgDir /usr/share/tomcat/webapps/openam
+--cfgStoreDirMgrPwd Password1 \
+--cfgStore dirServer \
+--cfgStoreHost 104.196.223.238 \
+--cfgStoreAdminPort 4444 \
+--cfgStorePort 1389 \
+--cfgStoreRootSuffix dc=example,dc=com
+--userStoreDirMgrPwd Password1 \
+--userStoreHost 104.196.223.238  \
+--userStoreAdminPort 4444 \
+--userStoreType LDAPv3ForOpenDS \
+--userStorePort 1389 \
+--userStoreRootSuffix dc=example,dc=com
 :exit
