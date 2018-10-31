@@ -16,39 +16,7 @@
     {
       "type": "shell",
       "inline": [
-        "sudo yum install gcc python-devel python-setuptools redhat-rpm-config -y",
-        "sudo easy_install -U pip",
-        "sudo pip uninstall crcmod",
-        "sudo pip install -U crcmod",
-        "sudo gsutil cp gs://fr-bits/* .",
-        "sudo yum install java-1.8.0-openjdk-devel -y",
-        "export JAVA_HOME=/usr/lib/jvm/java-openjdk",
-        "export PATH=$PATH:$JAVA_HOME/bin",
-        "echo /etc/security/limits.conf opendj soft nofile 65536 opendj hard nofile 131072",
-        "echo sudo sysctl fs.inotify.max_user_watches",
-        "echo sudo sysctl --write fs.inotify.max_user_watches=524288",
-        "sudo rpm -i DS*.rpm",
-        "sudo chmod -R 777 /opt",
-        "sudo echo Password1 > pwd.txt && sudo mv pwd.txt /opt/opendj/",
-        "mv add-config-entries.ldif /opt/opendj/",
-        "mv cts-add-schema.ldif /opt/opendj/",
-        "mv opendj_config_schema.ldif /opt/opendj/",
-        "mv opendj_user_schema.ldif /opt/opendj/",
-        "echo SETUP DIRECTORY",
-        "sudo /opt/opendj/setup directory-server --rootUserDN \"cn=Directory Manager\" --rootUserPasswordFile /opt/opendj/pwd.txt --hostname localhost --ldapPort 1389 --ldapsPort 1636 --httpsPort 8443 --adminConnectorPort 4444 --acceptLicense",
-        "echo CREATE BACKEND",
-        "sudo /opt/opendj/bin/dsconfig create-backend --trustAll --backend-name cfgStore --set base-dn:dc=example,dc=com --set enabled:true --type je --port 4444 --bindDN \"cn=Directory Manager\" --bindPassword Password1 --no-prompt",
-        "sudo /opt/opendj/bin/ldapmodify --port 1389 --bindDN \"cn=Directory Manager\" --bindPassword Password1 /opt/opendj/add-config-entries.ldif",
-        "echo SET ACCESS CONTROL",
-        "sudo /opt/opendj/bin/dsconfig set-access-control-handler-prop --trustAll --add global-aci:'(target = \"ldap:///cn=schema\")(targetattr = \"attributeTypes || objectClasses\")(version 3.0; acl \"Modify schema\"; allow (write)(userdn = \"ldap:///uid=openam,ou=admins,dc=example,dc=com\");)' --port 4444 --bindDN \"cn=Directory Manager\" --bindPassword Password1 --no-prompt",
-        "sudo /opt/opendj/bin/ldapmodify --port 1389 --bindDN \"cn=Directory Manager\" --bindPassword Password1 /opt/opendj/cts-add-schema.ldif",
-        "sudo /opt/opendj/bin/ldapmodify --port 1389 --bindDN \"cn=Directory Manager\" --bindPassword Password1 /opt/opendj/opendj_user_schema.ldif",
-        "sudo /opt/opendj/bin/ldapmodify --port 1389 --bindDN \"cn=Directory Manager\" --bindPassword Password1 /opt/opendj/opendj_config_schema.ldif",
-        "echo CREATE INDEX",
-        "sudo /opt/opendj/bin/dsconfig create-backend-index --trustAll --port 4444 --hostname localhost --bindDN \"cn=Directory Manager\" --bindPassword Password1 --backend-name cfgStore --index-name sunxmlkeyvalue --set index-type:equality --set index-type:substring --no-prompt",
-        "sudo /opt/opendj/bin/dsconfig create-backend-index --trustAll --port 4444 --hostname localhost --bindDN \"cn=Directory Manager\" --bindPassword Password1 --backend-name cfgStore --index-name iplanet-am-user-federation-info-key --set index-type:equality --no-prompt",
-        "sudo /opt/opendj/bin/dsconfig create-backend-index --trustAll --port 4444 --hostname localhost --bindDN \"cn=Directory Manager\" --bindPassword Password1 --backend-name cfgStore --index-name sun-fm-saml2-nameid-infokey --set index-type:equality --no-prompt",
-        "sudo /opt/opendj/bin/rebuild-index --trustAll --port 4444 --hostname localhost --bindDN \"cn=Directory Manager\" --bindPassword Password1 --baseDN dc=example,dc=com --rebuildAll --start 0"
+        "./build_ds.sh"
       ]
     }
   ]
